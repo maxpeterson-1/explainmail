@@ -1,0 +1,63 @@
+{
+  "manifest_version": 3,
+  "name": "ExplainMail - AI Email Summary & Clarifier",
+  "version": "1.0.0",
+  "description": "Simplify and clarify email content with AI. Get instant summaries and task breakdowns for Gmail messages.",
+  
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "commands",
+    "activeTab",
+    "scripting"
+  ],
+  
+  "host_permissions": [
+    "https://mail.google.com/*"
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"],
+      "css": ["popup.css"]
+    }
+  ],
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.css", "icons/*.png"],
+      "matches": ["https://mail.google.com/*"]
+    }
+  ],
+  
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+E"
+      },
+      "description": "Explain selected email text with AI"
+    }
+  },
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  
+  "action": {
+    "default_title": "ExplainMail - AI Email Summary",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  }
+} 

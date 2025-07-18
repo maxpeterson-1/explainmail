@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ExplainMail Setup</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4A9EFF;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 4px solid #4A9EFF;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .code-block {
+            background: #1E1E1E;
+            color: #E0E0E0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .highlight {
+            background: #FFD700;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .button {
+            background: #4A9EFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .button:hover {
+            background: #357ABD;
+            transform: translateY(-1px);
+        }
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .success {
+            color: #28a745;
+            font-weight: 600;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        .warning {
+            color: #ffc107;
+            font-weight: 600;
+        }
+        .test-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 ExplainMail Setup Guide</h1>
+        
+        <div class="step">
+            <h3>Step 1: Get Your OpenAI API Key</h3>
+            <p>You'll need an OpenAI API key to use ExplainMail:</p>
+            <ol>
+                <li>Visit <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a></li>
+                <li>Sign in or create an account</li>
+                <li>Click "Create new secret key"</li>
+                <li>Copy the generated key (it starts with "sk-")</li>
+            </ol>
+            <p class="warning">⚠️ Keep your API key secure and never share it publicly!</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Configure the Extension</h3>
+            <p>Open the <code>background.js</code> file and replace the placeholder API key:</p>
+            <div class="code-block">
+// Find this line in background.js:
+apiKey: <span class="highlight">"your-openai-api-key-here"</span>
+
+// Replace it with your actual key:
+apiKey: <span class="highlight">"sk-your-actual-api-key-here"</span>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Load the Extension in Chrome</h3>
+            <ol>
+                <li>Open Chrome and go to <code>chrome://extensions/</code></li>
+                <li>Enable "Developer mode" (toggle in top right)</li>
+                <li>Click "Load unpacked"</li>
+                <li>Select the ExplainMail folder</li>
+                <li>The extension should now appear in your extensions list</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Test the Extension</h3>
+            <p>Use the test section below to verify your setup:</p>
+            
+            <div class="test-section">
+                <h4>Test API Connection</h4>
+                <p>Enter your OpenAI API key and a test email to verify everything works:</p>
+                
+                <label for="apiKey">OpenAI API Key:</label>
+                <input type="password" id="apiKey" placeholder="sk-your-api-key-here" style="width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ddd; border-radius: 4px;">
+                
+                <label for="testEmail">Test Email Content:</label>
+                <textarea id="testEmail" placeholder="Hi team, I wanted to follow up on our project meeting from yesterday. We need to finalize the budget by Friday and submit the proposal to the client. Please review the attached documents and let me know if you have any questions. Thanks!"></textarea>
+                
+                <button class="button" onclick="testAPI()">Test ExplainMail</button>
+                
+                <div id="testResult" class="result"></div>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Usage</h3>
+            <p>Once configured, you can use ExplainMail in Gmail:</p>
+            <ul>
+                <li><strong>Context Menu:</strong> Select text → Right-click → "🧠 Explain with AI"</li>
+                <li><strong>Keyboard Shortcut:</strong> Select text → Press <code>Alt+Shift+E</code></li>
+                <li><strong>Auto-detect:</strong> Use shortcut without selection to process entire email</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Troubleshooting</h3>
+            <ul>
+                <li><strong>Extension not working:</strong> Check that you're on Gmail and the extension is enabled</li>
+                <li><strong>API errors:</strong> Verify your API key is correct and you have sufficient credits</li>
+                <li><strong>Popup not appearing:</strong> Try refreshing Gmail or check browser console for errors</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const testEmail = document.getElementById('testEmail').value.trim();
+            const resultDiv = document.getElementById('testResult');
+            const button = document.querySelector('.button');
+            
+            if (!apiKey || !testEmail) {
+                showResult('Please enter both API key and test email content.', 'error');
+                return;
+            }
+            
+            button.disabled = true;
+            button.textContent = 'Testing...';
+            showResult('Testing API connection...', '');
+            
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [{
+                            role: 'user',
+                            content: `Summarize the following email message in simple English. Split your response into exactly 2 parts:
+
+1. Essence: A brief summary of what the message is about
+2. Task: What action needs to be taken or what the recipient should do
+
+Email content:
+${testEmail}
+
+Please respond in this exact format:
+Essence: [your essence here]
+Task: [your task here]`
+                        }],
+                        max_tokens: 300,
+                        temperature: 0.7
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                const aiResponse = data.choices[0].message.content;
+                
+                // Parse the response
+                const essenceMatch = aiResponse.match(/Essence:\s*(.+?)(?=\n|$)/i);
+                const taskMatch = aiResponse.match(/Task:\s*(.+?)(?=\n|$)/i);
+                
+                const result = {
+                    essence: essenceMatch ? essenceMatch[1].trim() : 'Unable to extract essence',
+                    task: taskMatch ? taskMatch[1].trim() : 'Unable to extract task'
+                };
+                
+                showResult(`
+                    <strong class="success">✅ API Test Successful!</strong><br><br>
+                    <strong>Essence:</strong> ${result.essence}<br><br>
+                    <strong>Task:</strong> ${result.task}<br><br>
+                    Your ExplainMail extension is ready to use!
+                `, 'success');
+                
+            } catch (error) {
+                showResult(`
+                    <strong class="error">❌ API Test Failed</strong><br><br>
+                    Error: ${error.message}<br><br>
+                    Please check your API key and try again.
+                `, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Test ExplainMail';
+            }
+        }
+        
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.innerHTML = message;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html> 

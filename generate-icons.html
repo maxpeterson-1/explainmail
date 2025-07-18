@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ExplainMail Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .icon-container {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #4A9EFF;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #357ABD;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧠 ExplainMail Icon Generator</h1>
+    <p>Click the buttons below to download the icons in different sizes:</p>
+    
+    <div class="icon-container">
+        <canvas id="icon16" width="16" height="16"></canvas>
+        <br>
+        <button onclick="downloadIcon(16)">Download 16x16</button>
+    </div>
+    
+    <div class="icon-container">
+        <canvas id="icon32" width="32" height="32"></canvas>
+        <br>
+        <button onclick="downloadIcon(32)">Download 32x32</button>
+    </div>
+    
+    <div class="icon-container">
+        <canvas id="icon48" width="48" height="48"></canvas>
+        <br>
+        <button onclick="downloadIcon(48)">Download 48x48</button>
+    </div>
+    
+    <div class="icon-container">
+        <canvas id="icon128" width="128" height="128"></canvas>
+        <br>
+        <button onclick="downloadIcon(128)">Download 128x128</button>
+    </div>
+
+    <script>
+        // SVG content for the icon
+        const svgContent = `
+        <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background circle -->
+            <circle cx="64" cy="64" r="60" fill="#4A9EFF" stroke="#357ABD" stroke-width="4"/>
+            
+            <!-- Brain icon -->
+            <g transform="translate(32, 32)">
+                <!-- Brain outline -->
+                <path d="M32 16C32 7.16344 40.1634 -1 49 -1C57.8366 -1 66 7.16344 66 16C66 24.8366 57.8366 33 49 33C40.1634 33 32 24.8366 32 16Z" 
+                      fill="none" stroke="white" stroke-width="2"/>
+                
+                <!-- Brain details -->
+                <path d="M35 20C35 18.3431 36.3431 17 38 17H60C61.6569 17 63 18.3431 63 20V28C63 29.6569 61.6569 31 60 31H38C36.3431 31 35 29.6569 35 28V20Z" 
+                      fill="white"/>
+                
+                <!-- Brain folds -->
+                <path d="M38 22H60M38 25H60M38 28H60" stroke="#4A9EFF" stroke-width="1"/>
+            </g>
+            
+            <!-- Email icon -->
+            <g transform="translate(70, 70)">
+                <rect x="0" y="0" width="24" height="16" rx="2" fill="white" stroke="#4A9EFF" stroke-width="1"/>
+                <path d="M2 4L12 10L22 4" stroke="#4A9EFF" stroke-width="1" fill="none"/>
+            </g>
+        </svg>`;
+
+        // Function to render SVG to canvas
+        function renderIcon(size) {
+            const canvas = document.getElementById(`icon${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // Create a temporary image element
+            const img = new Image();
+            const svgBlob = new Blob([svgContent], {type: 'image/svg+xml'});
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = function() {
+                ctx.clearRect(0, 0, size, size);
+                ctx.drawImage(img, 0, 0, size, size);
+                URL.revokeObjectURL(url);
+            };
+            
+            img.src = url;
+        }
+
+        // Function to download icon
+        function downloadIcon(size) {
+            const canvas = document.getElementById(`icon${size}`);
+            const link = document.createElement('a');
+            link.download = `icon${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Render all icons when page loads
+        window.onload = function() {
+            renderIcon(16);
+            renderIcon(32);
+            renderIcon(48);
+            renderIcon(128);
+        };
+    </script>
+</body>
+</html> 
